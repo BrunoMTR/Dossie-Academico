@@ -26,7 +26,26 @@ public class Mysql {
 	private final String QueryAtualizarAluno = "UPDATE ALUNO SET NOME = ?, SOBRENOME = ?, CODIGO = ?, TESTE_1 = ?, TESTE_2 = ?, TESTE_3 = ?, MEDIA = ? WHERE CODIGO = ?;";
 	private final String QueryApagaUsuario = "DELETE FROM USUARIO WHERE USUARIO_ID = ?;";
 	private final String QueryAtualizarMedia = "UPDATE ALUNO SET MEDIA = (teste_1 * ?) + (teste_2 * ?) + (teste_3 * ?) WHERE ID = ?;";
-	//////////////////////////////////////////////////////////////////////////////////
+	private final String QueryAtualizarCodigo = "UPDATE ALUNO SET CODIGO = ? WHERE NOME = ? AND SOBRENOME = ?;";
+	
+	//////////////////////////////////////////////////////////////////////////////
+	public void AtualizarCodigo(int codigo,String nome, String sobrenome) {
+		try(Connection conexao = DriverManager.getConnection(url,usuario,palavraPasse);
+				
+				PreparedStatement discurso = conexao.prepareStatement(QueryAtualizarCodigo);){
+			    discurso.setInt(1,codigo);
+			    discurso.setString(2,nome);
+			    discurso.setString(3,sobrenome);
+			   			   
+			  discurso.executeUpdate();
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////
 	public void AtualizarMedia(int idTurmaSelecionado,JComboBox peso1,JComboBox peso2,JComboBox peso3) {
 		try(Connection conexao = DriverManager.getConnection(url,usuario,palavraPasse);
 				PreparedStatement discurso = conexao.prepareStatement(QueryAtualizarMedia);){
@@ -67,7 +86,7 @@ public class Mysql {
 			    discurso.setFloat(6,teste_3);
 			    discurso.setFloat(7,(teste_1 * (Float.parseFloat(peso1.getSelectedItem().toString())/100)) + (teste_2 * (Float.parseFloat(peso2.getSelectedItem().toString())/100)) + (teste_3 * (Float.parseFloat(peso3.getSelectedItem().toString())/100)));
 			    discurso.setInt(8,codigo);
-			    //System.out.print((teste_1 * (Float.parseFloat(peso3.getSelectedItem().toString())/100)) + (teste_2 * (Float.parseFloat(peso2.getSelectedItem().toString())/100)) + (teste_3 * (Float.parseFloat(peso3.getSelectedItem().toString())/100)));
+			  
 			    
 			 
 			    discurso.executeUpdate();

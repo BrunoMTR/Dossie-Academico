@@ -374,7 +374,7 @@ try {
 		
 		lblAvatar3 = new JLabel("");
 		lblAvatar3.setFont(new Font("SansSerif", Font.BOLD, 12));
-		lblAvatar3.setBounds(264, 109, 94, 16);
+		lblAvatar3.setBounds(232, 109, 152, 16);
 		painelTurma.add(lblAvatar3);
 		
 		JButton btnCriarTurma = new JButton("Criar");
@@ -608,14 +608,28 @@ try {
 		btnVisualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/////*******************************************************************************=================================================
-				int linhaSelecionada = tabelaTurma.getSelectedRow();
-				idTurma = Integer.parseInt(tabelaTurma.getModel().getValueAt(linhaSelecionada, 0).toString());
-				////////////aqiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-				layeredPane.removeAll();
-				layeredPane.add(painelAluno);
-				layeredPane.repaint();
-				layeredPane.revalidate();
-				mysql.BuscarAluno(modeloTabelaAluno,idTurma );
+			
+				if(!tfCadeira.getText().isEmpty()) {
+					int linhaSelecionada = tabelaTurma.getSelectedRow();
+					idTurma = Integer.parseInt(tabelaTurma.getModel().getValueAt(linhaSelecionada, 0).toString());
+				
+					layeredPane.removeAll();
+					layeredPane.add(painelAluno);
+					layeredPane.repaint();
+					layeredPane.revalidate();
+					mysql.BuscarAluno(modeloTabelaAluno,idTurma );
+					
+					//limpar os campos 
+					tfNome.setText(null);
+					tfSobrenome.setText(null);
+					tfCodigo.setText(null);
+				    tfTeste1.setText(null);
+					tfTeste2.setText(null);
+					tfTeste3.setText(null);
+					
+				}
+				
+				
 			}
 		});
 		btnVisualizar.setFont(new Font("SansSerif", Font.BOLD, 12));
@@ -630,7 +644,7 @@ try {
 	    lblAvatar2.setForeground(Color.BLACK);
 	    lblAvatar2.setFont(new Font("SansSerif", Font.BOLD, 12));
 		lblAvatar2.setIcon(new ImageIcon("C:\\Users\\Dell\\Documents\\Projectos eclipse\\Dossie\\avatar##.png"));
-		lblAvatar2.setBounds(153, 97, 114, 45);
+		lblAvatar2.setBounds(121, 97, 114, 45);
 		painelTurma.add(lblAvatar2);
 		
 		JLabel lblBgAmarelo = new JLabel("");
@@ -653,7 +667,7 @@ try {
 		painelAluno.setLayout(null);
 		
 		JButton btnCriarPDF = new JButton("Criar PDF");
-		btnCriarPDF.setBackground(Color.GREEN);
+		btnCriarPDF.setBackground(new Color(118, 199, 140));
 		btnCriarPDF.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MessageFormat cabecalho = new MessageFormat("UNIVERCIDADE EDUARDO MONDLANE");
@@ -674,7 +688,7 @@ try {
 		
 		lblNomeUsuario = new JLabel("New label");
 		lblNomeUsuario.setFont(new Font("SansSerif", Font.BOLD, 12));
-		lblNomeUsuario.setBounds(194, 105, 92, 16);
+		lblNomeUsuario.setBounds(194, 105, 169, 16);
 		painelAluno.add(lblNomeUsuario);
 		
 		JLabel lblAvatar4 = new JLabel("USUARIO:");
@@ -708,6 +722,11 @@ try {
 				codigoAlunoSelecionado = tabelaAluno.getModel().getValueAt(linhaSelecionada, 3).toString();
 				
 				mysql.LinhaSelecionadaTabelaAluno(codigoAlunoSelecionado, tfNome, tfSobrenome, tfCodigo, tfTeste1, tfTeste2, tfTeste3);
+				//3333333333333333333333333333333333333333333333333
+				tfTeste1.setBackground(Color.WHITE);
+				tfTeste2.setBackground(Color.WHITE);
+				tfTeste3.setBackground(Color.WHITE);
+				tfCodigo.setBackground(Color.WHITE);
 			}
 		});
 		tabelaAluno.setBackground(Color.LIGHT_GRAY);
@@ -817,32 +836,43 @@ try {
 			if(tfTeste3.getText().isBlank()) {
 				tfTeste3.setText("0");
 				}
-				
-				int somatorioNotas = Integer.parseInt(tfTeste1.getText().toString()) + Integer.parseInt(tfTeste2.getText().toString()) + Integer.parseInt(tfTeste3.getText().toString());
-				
-				if(somatorioNotas <= 60 && !tfNome.getText().isEmpty() && !tfSobrenome.getText().isEmpty() && !tfCodigo.getText().isEmpty()) {
+		
+			try {
+				  float t1 = Float.parseFloat( tfTeste1.getText());
+				   float t2 = Float.parseFloat( tfTeste2.getText());
+				   float t3 = Float.parseFloat( tfTeste3.getText());
+				   int   cg = Integer.parseInt(tfCodigo.getText());
+				   
+				   float somatorioNotas = Float.parseFloat(tfTeste1.getText().toString()) + Integer.parseInt(tfTeste2.getText().toString()) + Integer.parseInt(tfTeste3.getText().toString());
 					
-						mysql.AdicionarAluno(idTurma, tfNome, tfSobrenome, tfCodigo, tfTeste1, tfTeste2, tfTeste3,painelAluno,cbPeso1,cbPeso2,cbPeso3);
+					if(somatorioNotas <= 60 && !tfNome.getText().isEmpty() && !tfSobrenome.getText().isEmpty() && !tfCodigo.getText().isEmpty()) {
 						
-					
-				
-					
-					//apaga tudo na tabela
-				modeloTabelaAluno.setRowCount(0);
-					
-				//limpar os campos 
-				tfNome.setText(null);
-				tfSobrenome.setText(null);
-				tfCodigo.setText(null);
-			    tfTeste1.setText(null);
-				tfTeste2.setText(null);
-				tfTeste3.setText(null);
-			   
-					
-			   mysql.BuscarAluno(modeloTabelaAluno,idTurma);
-					
+							mysql.AdicionarAluno(idTurma, tfNome, tfSobrenome, tfCodigo, tfTeste1, tfTeste2, tfTeste3,painelAluno,cbPeso1,cbPeso2,cbPeso3);
+							//apaga tudo na tabela
+					        modeloTabelaAluno.setRowCount(0);
+						
+					        //limpar os campos 
+					        tfNome.setText(null);
+					        tfSobrenome.setText(null);
+					        tfCodigo.setText(null);
+					        tfTeste1.setText(null);
+					        tfTeste2.setText(null);
+					        tfTeste3.setText(null);
+					        mysql.BuscarAluno(modeloTabelaAluno,idTurma);
+					        
+					    	tfTeste1.setBackground(Color.WHITE);
+							tfTeste2.setBackground(Color.WHITE);
+							tfTeste3.setBackground(Color.WHITE);
+							tfCodigo.setBackground(Color.WHITE);
 				}
+			}catch(Exception ex) {
+				tfTeste1.setBackground(new Color(244,83,28));
+				tfTeste2.setBackground(new Color(244,83,28));
+				tfTeste3.setBackground(new Color(244,83,28));
+				tfCodigo.setBackground(new Color(244,83,28));
+				
 			}
+               }
 		});
 		btnAdicionarAluno.setFont(new Font("SansSerif", Font.BOLD, 14));
 		btnAdicionarAluno.setBackground(new Color(243, 190, 148));
@@ -852,22 +882,29 @@ try {
 		JButton btnApagarAluno = new JButton("Apagar");
 		btnApagarAluno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mysql.ApagarAluno(Integer.parseInt(codigoAlunoSelecionado));
-				//System.out.print(codigoAlunoSelecionado);
-				//apaga tudo na tabela
-				modeloTabelaAluno.setRowCount(0);
 				
-				//limpar os campos 
-				tfNome.setText(null);
-				tfSobrenome.setText(null);
-				tfCodigo.setText(null);
-				tfTeste1.setText(null);
-				tfTeste2.setText(null);
-				tfTeste3.setText(null);
-		
+				if(!tfNome.getText().isEmpty()) {
+					mysql.ApagarAluno(Integer.parseInt(codigoAlunoSelecionado));
+					//System.out.print(codigoAlunoSelecionado);
+					//apaga tudo na tabela
+					modeloTabelaAluno.setRowCount(0);
+					
+					//limpar os campos 
+					tfNome.setText(null);
+					tfSobrenome.setText(null);
+					tfCodigo.setText(null);
+					tfTeste1.setText(null);
+					tfTeste2.setText(null);
+					tfTeste3.setText(null);
+			
+					
+					mysql.BuscarAluno(modeloTabelaAluno,idTurma);
+					
+				}
 				
-				mysql.BuscarAluno(modeloTabelaAluno,idTurma);
-				/////////////7777777777777777777777777777777777777777777777777777
+				
+				
+				
 			}
 		});
 		btnApagarAluno.setFont(new Font("SansSerif", Font.BOLD, 14));
@@ -877,24 +914,72 @@ try {
 		
 		JButton btnAtualizarAluno = new JButton("Atualizar");
 		btnAtualizarAluno.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
-				if(!tfNome.getText().isEmpty() && !tfSobrenome.getText().isEmpty() && !tfCodigo.getText().isEmpty()) {
-					mysql.AtualizarAluno(tfNome.getText(),tfSobrenome.getText(),Integer.parseInt(tfCodigo.getText().toString()),Float.parseFloat(tfTeste1.getText().toString()),Float.parseFloat(tfTeste2.getText().toString()),Float.parseFloat(tfTeste3.getText().toString()),cbPeso1,cbPeso2,cbPeso3);
+				
+				if(tfTeste1.getText().isBlank()) {
+					tfTeste1.setText("0");
+					}
+				if(tfTeste2.getText().isBlank()) {
+					tfTeste2.setText("0");
+					}
+				if(tfTeste3.getText().isBlank()) {
+					tfTeste3.setText("0");
+					}
+				
+				   try {
+					   float t1 = Float.parseFloat( tfTeste1.getText());
+					   float t2 = Float.parseFloat( tfTeste2.getText());
+					   float t3 = Float.parseFloat( tfTeste3.getText());
+					   int   cg = Integer.parseInt(tfCodigo.getText());
+					   
+					   
+					   if(!tfNome.getText().isEmpty() && !tfSobrenome.getText().isEmpty() && !tfCodigo.getText().isEmpty()) {
+							mysql.AtualizarAluno(tfNome.getText(),tfSobrenome.getText(),Integer.parseInt(tfCodigo.getText().toString()),Float.parseFloat(tfTeste1.getText().toString()),Float.parseFloat(tfTeste2.getText().toString()),Float.parseFloat(tfTeste3.getText().toString()),cbPeso1,cbPeso2,cbPeso3);
+							
+							try {
+								mysql.AtualizarCodigo(Integer.parseInt(tfCodigo.getText()), tfNome.getText(), tfSobrenome.getText());
+							}catch(Exception ex){
+								JOptionPane.showMessageDialog(painelAluno, "CODIGO NAO DISPONIVEL");
+							}
+							
+							
+							modeloTabelaAluno.setRowCount(0);
+							mysql.BuscarAluno(modeloTabelaAluno,idTurma );
+							
+							
+						//limpar os campos 
+						tfNome.setText(null);
+						tfSobrenome.setText(null);
+						tfCodigo.setText(null);
+					    tfTeste1.setText(null);
+						tfTeste2.setText(null);
+						tfTeste3.setText(null);
+						
+						tfTeste1.setBackground(Color.WHITE);
+						tfTeste2.setBackground(Color.WHITE);
+						tfTeste3.setBackground(Color.WHITE);
+						tfCodigo.setBackground(Color.WHITE);
+							
+							
+						}	
+				   }catch(Exception ex) {
+						tfTeste1.setBackground(new Color(244,83,28));
+						tfTeste2.setBackground(new Color(244,83,28));
+						tfTeste3.setBackground(new Color(244,83,28));
+						tfCodigo.setBackground(new Color(244,83,28));
 					
-					modeloTabelaAluno.setRowCount(0);
-					mysql.BuscarAluno(modeloTabelaAluno,idTurma );
+					   
+				   }
+
 					
-					
-				//limpar os campos 
-				tfNome.setText(null);
-				tfSobrenome.setText(null);
-				tfCodigo.setText(null);
-			    tfTeste1.setText(null);
-				tfTeste2.setText(null);
-				tfTeste3.setText(null);
-					
-					
-				}
+				
+				
+				
+				
+				
+				
+				
 			}
 		});
 		btnAtualizarAluno.setFont(new Font("SansSerif", Font.BOLD, 14));
